@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Booker.Models.Books>
+
+@{
+    ViewData["Title"] = "Books list";
+}
+
+<h1>List of books</h1>
+
+<p>
+    <a class="btn btn-info" asp-action="Create">Create New</a>
+</p>
+
+@if (TempData["Message"] != null)
+{
+<h4 class="text-danger"> @TempData["Message"]</h4>
+}
+
+@using (Html.BeginForm())
+{
+    <p>
+        Find by title or author: @Html.TextBox("SearchString")  
+        <input type="submit" value="Search" /></p>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                Title
+                @Html.ActionLink(" (sort)", "Index", new { sortOrder = ViewBag.TitleSortParm })
+            </th>
+            <th>
+                Author
+                @Html.ActionLink(" (sort)", "Index", new { sortOrder = ViewBag.AuthorSortParm })
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Publisher)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>      
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Publisher)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.ActionLink("Sell now", "Sell", new {  id=item.BookId }, new {@class="btn btn-success"}) 
+                @Html.ActionLink("Edit", "Edit", new {  id=item.BookId }, new {@class="btn btn-info"}) 
+                @Html.ActionLink("Details", "Details", new {  id=item.BookId}, new {@class="btn btn-warning"}) 
+                @Html.ActionLink("Delete", "Delete", new { id=item.BookId  }, new {@class="btn btn-danger"})
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+
